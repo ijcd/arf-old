@@ -1,0 +1,105 @@
+# -T skip Test::Unit
+# -O skip ActiveRecord files
+# -j skip Prototype
+
+require 'fileutils'
+
+config do
+  appname "testapp"
+  rvmstring "1.9.2@arf-test"
+  git_commit_foreach true
+  git_keep_gemfile_lock true
+end
+
+recipe :rvm do
+  FileUtils.mkdir config[:appname]
+  FileUtils.cd config[:appname]
+  puts "Now in #{FileUtils.pwd}"
+  system "rvm use --create --rvmrc #{config[:rvmstring]}"
+  system "rvm rvmrc trust .rvmrc"
+  system "rvm reload"
+  system "rvm gemset clear"
+  system "rvm info"
+end
+
+recipe :rails do
+  system "rails new #{config[:appname]}"
+end
+
+# recipe :jquery_haml do
+#   recipe :jquery
+#   recipe :haml
+# end
+
+# recipe "base" do
+#   recipe :jquery
+#   recipe :haml
+#   recipe :rspec 
+#   recipe :cucumber 
+#   recipe :guard 
+# end
+
+# recipe "app_stuff" do
+#   recipe :action_mailer 
+#   recipe :devise 
+#   recipe :add_user 
+#   recipe :home_page 
+#   recipe :home_page_users 
+#   recipe :seed_database 
+#   recipe :users_page 
+#   recipe :css_setup 
+#   recipe :application_layout 
+# end
+
+# recipe "app_stuff_other" do
+#   recipe :html5 
+#   recipe :navigation 
+# end
+
+# recipe "finish" do
+#   recipe :cleanup 
+#   recipe :ban_spiders 
+#   recipe :extras 
+#   recipe :git
+#   rails_template("-T", "-O")
+# end
+
+# recipe "rails3-devise-rspec-cucumber" do
+#   recipe :base
+#   recipe :app_stuff
+#   recipe :app_stuff_other
+#   recipe :finish
+# end
+
+# recipe "rails3-mongoid-devise" do
+#   recipe :base
+#   recipe :mongoid 
+#   recipe :app_stuff
+#   recipe :finish
+# end
+
+# recipe "rails3-mongoid-omniauth" do
+#   recipe :base
+#   recipe :mongoid 
+#   recipe :seed_database
+#   recipe :add_user
+#   recipe :omniauth
+#   recipe :home_page
+#   recipe :home_page_users
+#   recipe :css_setup
+#   recipe :application_layout
+#   recipe :html5
+#   recipe :navigation
+#   recipe :users_page
+#   recipe :omniauth_email
+#   recipe :finish
+# end
+
+# recipe "rails3-subdomains" do
+#   recipe :base
+#   recipe :mongoid 
+#   recipe :app_stuff
+#   recipe :subdomains 
+#   recipe :app_stuff_other
+#   recipe :finish
+# end
